@@ -1,0 +1,43 @@
+.box {
+  min-width: 700px;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 60px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  background-color: #3d5475;
+  width: 400px;
+  padding: 30px 40px;
+  border-radius: 10px;
+}
+.label {
+  display: flex;
+  margin-bottom: 30px;
+}
+.title {
+  margin: 0;
+  padding: 0;
+  color: white;
+}
+.input {
+  height: 30px;
+  border-radius: 10px;
+  border: transparent;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: auto;
+  padding-left: 10px;
+}
+.btn {
+  width: 150px;
+  height: 30px;
+  background-color: #658ac2;
+  border-radius: 10px;
+  border: transparent;
+  font-size: 18px;
+  margin: 0 auto;
+  cursor: pointer;
+}
