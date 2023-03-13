@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import shortid from 'shortid';
 
@@ -11,8 +11,17 @@ import style from './phonebook.module.scss';
 
 const KEY = 'PHONEBOOK';
 
+const contactDefault = [
+  { id: 'id-1', userName: 'Rosie Simpson', userNumber: '459-12-56' },
+  { id: 'id-2', userName: 'Hermione Kline', userNumber: '443-89-12' },
+  { id: 'id-3', userName: 'Eden Clements', userNumber: '645-17-79' },
+  { id: 'id-4', userName: 'Annie Copeland', userNumber: '227-91-26' },
+];
+
 function Phonebook() {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(() => {
+    return JSON.parse(window.localStorage.getItem(KEY)) || contactDefault;
+  });
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const [filter, setFilter] = useState('');
@@ -31,6 +40,10 @@ function Phonebook() {
         return;
     }
   };
+
+  useEffect(() => {
+    window.localStorage.setItem(KEY, JSON.stringify(contacts));
+  }, [contacts]);
 
   const formOnSubmitBtn = event => {
     event.preventDefault();
