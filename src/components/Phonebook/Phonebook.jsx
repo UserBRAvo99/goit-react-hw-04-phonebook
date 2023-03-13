@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 
 import shortid from 'shortid';
 
@@ -10,96 +11,81 @@ import style from './phonebook.module.scss';
 
 const KEY = 'PHONEBOOK';
 
-class Phonebook extends React.Component {
-  state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
-    filter: '',
-    name: '',
-    number: '',
+function Phonebook() {
+  const [contacts, setContacts] = useState([]);
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+  const [filter, setFilter] = useState('');
+
+  const handleInputChange = event => {
+    const { name, value } = event.target;
+
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
+      case 'number':
+        setNumber(value);
+        break;
+      default:
+        return;
+    }
   };
 
-  componentDidMount() {
-    let localPhonebook = localStorage.getItem(KEY);
-    if (localPhonebook && JSON.parse(localPhonebook).length) {
-      this.setState({ contacts: JSON.parse(localPhonebook) });
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevState.contacts.length !== this.state.contacts.length) {
-      localStorage.setItem(KEY, JSON.stringify(this.state.contacts));
-    }
-  }
-
-  inputChange = event => {
-    const { name, value } = event.currentTarget;
-    this.setState({ [name]: value });
-  };
-
-  formOnSubmit = event => {
+  const formOnSubmitBtn = event => {
     event.preventDefault();
 
-    if (this.state.contacts.find(elem => elem.name === this.state.name)) {
-      alert(`${this.state.name} is already in contacts`);
-      this.reset();
+    if (contacts.find(elem => elem.userName === name)) {
+      alert(`${name} is already in contacts`);
+      resetFormInput();
       return;
     }
 
-    const { name, number } = this.state;
-    this.setState(prevState => ({
-      contacts: [
-        { name: name, number: number, id: shortid() },
-        ...prevState.contacts,
-      ],
-    }));
-    this.reset();
-  };
-  reset = () => {
-    this.setState({ name: '', number: '' });
+    setContacts([
+      ...contacts,
+      { userName: name.trim(), userNumber: number.trim(), id: shortid() },
+    ]);
+    resetFormInput();
   };
 
-  inputSrc = event => {
+  const inputFilterContacts = event => {
     const input = event.currentTarget.value.toLowerCase().trim();
-
-    this.setState({ filter: input });
+    setFilter(input);
+    return input;
   };
-  deleteContact = event => {
-    let result = this.state.contacts.filter(
-      elem => elem.id !== event.currentTarget.id
+
+  const deleteContactUser = event => {
+    console.log(event.currentTarget.id);
+    let result = contacts.filter(
+      contact => contact.id !== event.currentTarget.id
     );
-
-    this.setState({ contacts: result });
+    setContacts(result);
   };
 
-  render() {
-    const contactsData = this.state.contacts;
-    const filterData = this.state.filter;
-    return (
-      <div className={style.wrapper}>
-        <h2 className={style.title}>Phonebook</h2>
-        <FormPhonebook
-          submit={this.formOnSubmit}
-          name={this.state.name}
-          number={this.state.number}
-          change={this.inputChange}
+  const resetFormInput = () => {
+    setName('');
+    setNumber('');
+  };
+  return (
+    <div className={style.wrapper}>
+      <h2 className={style.title}>Phonebook</h2>
+      <FormPhonebook
+        submit={formOnSubmitBtn}
+        name={name}
+        number={number}
+        change={handleInputChange}
+      />
+      <div>
+        <h2 className={style.title}>Contacts</h2>
+        <Filter filter={inputFilterContacts} />
+        <Contacts
+          contacts={contacts}
+          filterUsers={filter}
+          deleteContact={deleteContactUser}
         />
-        <div>
-          <h2 className={style.title}>Contacts</h2>
-          <Filter filter={this.inputSrc} />
-          <Contacts
-            contacts={contactsData}
-            filter={filterData}
-            deleteContact={this.deleteContact}
-          />
-        </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default Phonebook;

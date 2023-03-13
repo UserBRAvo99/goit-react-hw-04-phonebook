@@ -36,32 +36,32 @@ class Phonebook extends React.Component {
     }
   }
 
-  inputChange = event => {
-    const { name, value } = event.currentTarget;
-    this.setState({ [name]: value });
-  };
+  //   inputChange = event => {
+  //     const { name, value } = event.currentTarget;
+  //     this.setState({ [name]: value });
+  //   };
 
-  formOnSubmit = event => {
-    event.preventDefault();
+  //   formOnSubmit = event => {
+  //     event.preventDefault();
 
-    if (this.state.contacts.find(elem => elem.name === this.state.name)) {
-      alert(`${this.state.name} is already in contacts`);
-      this.reset();
-      return;
-    }
+  //     if (this.state.contacts.find(elem => elem.name === this.state.name)) {
+  //       alert(`${this.state.name} is already in contacts`);
+  //       this.reset();
+  //       return;
+  //     }
 
-    const { name, number } = this.state;
-    this.setState(prevState => ({
-      contacts: [
-        { name: name, number: number, id: shortid() },
-        ...prevState.contacts,
-      ],
-    }));
-    this.reset();
-  };
-  reset = () => {
-    this.setState({ name: '', number: '' });
-  };
+  //     const { name, number } = this.state;
+  //     this.setState(prevState => ({
+  //       contacts: [
+  //         { name: name, number: number, id: shortid() },
+  //         ...prevState.contacts,
+  //       ],
+  //     }));
+  //     this.reset();
+  //   };
+  //   reset = () => {
+  //     this.setState({ name: '', number: '' });
+  //   };
 
   inputSrc = event => {
     const input = event.currentTarget.value.toLowerCase().trim();
