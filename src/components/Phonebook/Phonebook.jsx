@@ -68,7 +68,6 @@ function Phonebook() {
   };
 
   const deleteContactUser = event => {
-    console.log(event.currentTarget.id);
     let result = contacts.filter(
       contact => contact.id !== event.currentTarget.id
     );
